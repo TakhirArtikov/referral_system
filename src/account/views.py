@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, mixins
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -38,7 +38,12 @@ class ReferralByUserEmailAPIView(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
-class ReferralAPIView(ModelViewSet):
+class ReferralAPIView(
+    viewsets.GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.RetrieveModelMixin
+):
     queryset = Referral.objects.select_related('user').order_by('-id')
     serializer_class = ReferralSerializer
     permission_classes = (IsAuthenticated,)
