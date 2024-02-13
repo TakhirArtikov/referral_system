@@ -14,7 +14,6 @@ class HunterClient:
             'email': email
         }
         r = requests.get(f'{self.base_url}/email-verifier/', params=params).json()
-        print('RESPONSE', r)
         data = r['data']
         return data['status'] == 'valid'
 
